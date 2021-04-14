@@ -36,7 +36,9 @@ package require openlane 0.9
 prep -design uart
 
 ![Screenshot from 2021-04-14 13-38-20](https://user-images.githubusercontent.com/36249257/114717009-eb82a500-9d34-11eb-827a-bc39186e6233.png)
+
 For running synthesis:
+
 ![Screenshot from 2021-04-14 13-38-43](https://user-images.githubusercontent.com/36249257/114717685-93986e00-9d35-11eb-835d-8b3f4d1bb2f4.png)
 ![Screenshot from 2021-04-14 14-04-38](https://user-images.githubusercontent.com/36249257/114717753-a743d480-9d35-11eb-81d7-00858b67bf32.png)
 
@@ -87,5 +89,43 @@ On magic: file>> write GDS
 klayout uart.gds
 ![Screenshot from 2021-04-14 14-42-52](https://user-images.githubusercontent.com/36249257/114721792-8ed5b900-9d39-11eb-850e-73f0d89960f9.png)
 
+> - Core Area:
+
+![Screenshot from 2021-04-14 20-40-57](https://user-images.githubusercontent.com/36249257/114762408-061f4300-9d62-11eb-8af6-6b18895c42dc.png)
 
 
+## A Second Run Using the High Density Low Leakage Library(hdll):
+> - flow.tcl -interactive
+> - package require openlane 0.9
+> - prep -design uart -tag second_run
+
+![Screenshot from 2021-04-14 19-28-17](https://user-images.githubusercontent.com/36249257/114760110-4630f680-9d5f-11eb-82c8-5c25f7b67d55.png)
+
+> - run_synthesis
+
+![Screenshot from 2021-04-14 19-28-48](https://user-images.githubusercontent.com/36249257/114760213-5f39a780-9d5f-11eb-83fb-55d707a7dd6a.png)
+
+> - run_floorplan
+
+![Screenshot from 2021-04-14 19-37-30](https://user-images.githubusercontent.com/36249257/114760243-6660b580-9d5f-11eb-99c8-1a9e8f438fd8.png)
+
+> - run_placement
+
+![Screenshot from 2021-04-14 19-38-25](https://user-images.githubusercontent.com/36249257/114760373-85f7de00-9d5f-11eb-9fff-0957c2f3ab3e.png)
+
+> - run_cts
+
+![Screenshot from 2021-04-14 19-41-44](https://user-images.githubusercontent.com/36249257/114760417-9314cd00-9d5f-11eb-90a0-37b72f241fb4.png)
+
+> - run_routing 
+
+![Screenshot from 2021-04-14 19-50-12](https://user-images.githubusercontent.com/36249257/114760511-aaec5100-9d5f-11eb-93fa-94de76ae7202.png)
+
+Core Area:
+
+![Screenshot from 2021-04-14 20-39-16](https://user-images.githubusercontent.com/36249257/114762239-cfe1c380-9d61-11eb-9a6a-ca0c9560741f.png)
+
+
+## Observations:
+The slack value decreased
+The area increased
