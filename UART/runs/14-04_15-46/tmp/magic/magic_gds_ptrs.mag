@@ -1,0 +1,6 @@
+<< properties >>
+string FIXED_BBOX 0 0 11654 13798
+string GDS_FILE /openLANE_flow/designs/uart/runs/14-04_15-46/results/magic/uart.gds
+string GDS_END 525102
+string GDS_START 221128
+<< end >>

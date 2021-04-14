@@ -1,0 +1,18 @@
+digraph "uart" {
+label="uart";
+rankdir="LR";
+remincross=true;
+n1 [ shape=octagon, label="UARTn_TXD", color="black", fontcolor="black" ];
+n2 [ shape=octagon, label="UARTn_RTS", color="black", fontcolor="black" ];
+n3 [ shape=octagon, label="UARTn_CTS", color="black", fontcolor="black" ];
+n4 [ shape=octagon, label="clk", color="black", fontcolor="black" ];
+n5 [ shape=octagon, label="UARTn_RXD", color="black", fontcolor="black" ];
+c6 [ shape=record, label="{{<p3> UARTn_CTS|<p4> clk}|tx_inst\nuart_tx|{<p1> UARTn_TXD}}" ];
+c7 [ shape=record, label="{{<p5> UARTn_RXD|<p4> clk}|rx_inst\nuart_rx|{<p2> UARTn_RTS}}" ];
+c6:p1:e -> n1:w [color="black", label=""];
+c7:p2:e -> n2:w [color="black", label=""];
+n3:e -> c6:p3:w [color="black", label=""];
+n4:e -> c6:p4:w [color="black", label=""];
+n4:e -> c7:p4:w [color="black", label=""];
+n5:e -> c7:p5:w [color="black", label=""];
+}

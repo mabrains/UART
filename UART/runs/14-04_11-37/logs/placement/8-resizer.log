@@ -1,0 +1,70 @@
+OpenROAD 0.9.0 1415572a73
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+Warning: /openLANE_flow/designs/uart/runs/14-04_11-37/tmp/resizer.lib line 32, default_operating_condition ss_100C_1v60 not found.
+Notice 0: Reading LEF file:  /openLANE_flow/designs/uart/runs/14-04_11-37/tmp/merged_unpadded.lef
+Notice 0:     Created 13 technology layers
+Notice 0:     Created 25 technology vias
+Notice 0:     Created 440 library cells
+Notice 0: Finished LEF file:  /openLANE_flow/designs/uart/runs/14-04_11-37/tmp/merged_unpadded.lef
+Notice 0: 
+Reading DEF file: /openLANE_flow/designs/uart/runs/14-04_11-37/tmp/placement/8-replace.def
+Notice 0: Design: uart
+Notice 0:     Created 7 pins.
+Notice 0:     Created 169 components and 975 component-terminals.
+Notice 0:     Created 2 special nets and 0 connections.
+Notice 0:     Created 110 nets and 354 connections.
+Notice 0: Finished DEF file: /openLANE_flow/designs/uart/runs/14-04_11-37/tmp/placement/8-replace.def
+create_clock [get_ports $::env(CLOCK_PORT)]  -name $::env(CLOCK_PORT)  -period $::env(CLOCK_PERIOD)
+set input_delay_value [expr $::env(CLOCK_PERIOD) * $::env(IO_PCT)]
+set output_delay_value [expr $::env(CLOCK_PERIOD) * $::env(IO_PCT)]
+puts "\[INFO\]: Setting output delay to: $output_delay_value"
+[INFO]: Setting output delay to: 1.332
+puts "\[INFO\]: Setting input delay to: $input_delay_value"
+[INFO]: Setting input delay to: 1.332
+set_max_fanout $::env(SYNTH_MAX_FANOUT) [current_design]
+set clk_indx [lsearch [all_inputs] [get_port $::env(CLOCK_PORT)]]
+#set rst_indx [lsearch [all_inputs] [get_port resetn]]
+set all_inputs_wo_clk [lreplace [all_inputs] $clk_indx $clk_indx]
+#set all_inputs_wo_clk_rst [lreplace $all_inputs_wo_clk $rst_indx $rst_indx]
+set all_inputs_wo_clk_rst $all_inputs_wo_clk
+# correct resetn
+set_input_delay $input_delay_value  -clock [get_clocks $::env(CLOCK_PORT)] $all_inputs_wo_clk_rst
+#set_input_delay 0.0 -clock [get_clocks $::env(CLOCK_PORT)] {resetn}
+set_output_delay $output_delay_value  -clock [get_clocks $::env(CLOCK_PORT)] [all_outputs]
+# TODO set this as parameter
+set_driving_cell -lib_cell $::env(SYNTH_DRIVING_CELL) -pin $::env(SYNTH_DRIVING_CELL_PIN) [all_inputs]
+set cap_load [expr $::env(SYNTH_CAP_LOAD) / 1000.0]
+puts "\[INFO\]: Setting load to: $cap_load"
+[INFO]: Setting load to: 0.01765
+set_load  $cap_load [all_outputs]
+[INFO RSZ-0027] Inserted 2 input buffers.
+[INFO RSZ-0028] Inserted 2 output buffers.
+[INFO RSZ-0039] Resized 80 instances.
+Design Stats
+--------------------------------
+total instances           173
+multi row instances         0
+fixed instances            62
+nets                      116
+design area            2169.6 u^2
+fixed area              162.7 u^2
+movable area           1002.2 u^2
+utilization                50 %
+utilization padded         83 %
+rows                       17
+row height                2.7 u
+
+Placement Analysis
+--------------------------------
+total displacement      744.8 u
+average displacement      4.3 u
+max displacement         38.2 u
+original HPWL          1026.6 u
+legalized HPWL         2038.6 u
+delta HPWL                 99 %
+
+[INFO DPL-0020] Mirrored 51 instances
+[INFO DPL-0021] HPWL before            2038.6 u
+[INFO DPL-0022] HPWL after             1953.2 u
+[INFO DPL-0023] HPWL delta               -4.2 %

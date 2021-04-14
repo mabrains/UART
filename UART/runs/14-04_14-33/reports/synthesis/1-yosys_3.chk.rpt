@@ -1,0 +1,6 @@
+
+57. Executing CHECK pass (checking for obvious problems).
+checking module uart..
+Warning: Wire uart.\UARTn_TXD is used but has no driver.
+Warning: Wire uart.\UARTn_RTS is used but has no driver.
+found and reported 2 problems.

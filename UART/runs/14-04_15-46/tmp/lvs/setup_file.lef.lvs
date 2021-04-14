@@ -1,0 +1,1 @@
+lvs {/openLANE_flow/designs/uart/runs/14-04_15-46/results/magic/uart.spice uart} {/openLANE_flow/designs/uart/runs/14-04_15-46/results/lvs/uart.lvs.powered.v uart} /home/mariam/openlane/pdks/sky130A/libs.tech/netgen/sky130A_setup.tcl /openLANE_flow/designs/uart/runs/14-04_15-46/results/lvs/uart.lvs.lef.log -json

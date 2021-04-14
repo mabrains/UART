@@ -1,0 +1,78 @@
+Wed Apr 14 12:25:39 UTC 2021 - Executing "python3 /openLANE_flow/scripts/extract_metal_layers.py -t /home/mariam/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/techlef/sky130_fd_sc_hd.tlef -o /openLANE_flow/designs/uart/runs/14-04_11-37/tmp/met_layers_list.txt"
+
+Wed Apr 14 12:25:39 UTC 2021 - Executing "/openLANE_flow/scripts/mergeLef.py -i /home/mariam/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/techlef/sky130_fd_sc_hd.tlef {/home/mariam/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_fd_sc_hd.lef /home/mariam/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_ef_sc_hd__decap_12.lef /home/mariam/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_ef_sc_hd__fakediode_2.lef /home/mariam/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_ef_sc_hd__fill_12.lef} -o /openLANE_flow/designs/uart/runs/14-04_11-37/tmp/merged_unpadded.lef |& tee >&@stdout"
+
+Wed Apr 14 12:25:39 UTC 2021 - Executing "/openLANE_flow/scripts/libtrim.pl /home/mariam/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib /openLANE_flow/designs/uart/runs/14-04_11-37/tmp/trimmed.lib.exclude.list > /openLANE_flow/designs/uart/runs/14-04_11-37/tmp/trimmed.lib"
+
+Wed Apr 14 12:25:39 UTC 2021 - Executing "echo {openlane v0.12-1-ga95f56d} > /openLANE_flow/designs/uart/runs/14-04_11-37/OPENLANE_VERSION"
+
+Wed Apr 14 12:25:47 UTC 2021 - Executing "sed -E {s/^([[:space:]]+)pg_pin(.*)/\1pin\2\n\1    direction : "inout";/g} /home/mariam/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib > /openLANE_flow/designs/uart/runs/14-04_11-37/tmp/sky130_fd_sc_hd__tt_025C_1v80.no_pg.lib"
+
+Wed Apr 14 12:25:47 UTC 2021 - Executing "yosys -c /openLANE_flow/scripts/synth.tcl -l /openLANE_flow/designs/uart/runs/14-04_11-37/logs/synthesis/1-yosys.log |& tee >&@stdout"
+
+Wed Apr 14 12:25:49 UTC 2021 - Executing "sed -i -e {s/\(set ::env(CURRENT_NETLIST)\).*/\1 \/openLANE_flow\/designs\/uart\/runs\/14-04_11-37\/results\/synthesis\/uart.synthesis.v/} /openLANE_flow/designs/uart/runs/14-04_11-37/config.tcl"
+
+Wed Apr 14 12:25:49 UTC 2021 - Executing "sed -i -e {s/\(set ::env(PREV_NETLIST)\).*/\1 0/} /openLANE_flow/designs/uart/runs/14-04_11-37/config.tcl"
+
+Wed Apr 14 12:25:49 UTC 2021 - Executing "sed -i /defparam/d /openLANE_flow/designs/uart/runs/14-04_11-37/results/synthesis/uart.synthesis.v"
+
+Wed Apr 14 12:25:49 UTC 2021 - Executing "sta /openLANE_flow/scripts/sta.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/synthesis/2-opensta"
+
+Wed Apr 14 12:25:58 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_floorplan.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/floorplan/3-verilog2def.openroad.log"
+
+Wed Apr 14 12:26:00 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_ioplacer.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/floorplan/4-ioPlacer.log"
+
+Wed Apr 14 12:26:01 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_tapcell.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/floorplan/5-tapcell.log"
+
+Wed Apr 14 12:26:03 UTC 2021 - Executing "bash /openLANE_flow/scripts/klayout/scrotLayout.sh /home/mariam/openlane/pdks/sky130A/libs.tech/klayout/sky130A.lyt /openLANE_flow/designs/uart/runs/14-04_11-37/results/floorplan/uart.floorplan.def |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/klayout/6-klayout.scrot.log"
+
+Wed Apr 14 12:26:08 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_pdn.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/floorplan/7-pdn.log"
+
+Wed Apr 14 12:27:26 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_replace.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/placement/8-replace.log"
+
+Wed Apr 14 12:27:34 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_resizer.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/placement/8-resizer.log"
+
+Wed Apr 14 12:27:40 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_write_verilog.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/9-write_verilog.log"
+
+Wed Apr 14 12:27:42 UTC 2021 - Executing "sed -i -e {s/\(set ::env(CURRENT_NETLIST)\).*/\1 \/openLANE_flow\/designs\/uart\/runs\/14-04_11-37\/results\/synthesis\/uart.synthesis_optimized.v/} /openLANE_flow/designs/uart/runs/14-04_11-37/config.tcl"
+
+Wed Apr 14 12:27:42 UTC 2021 - Executing "sed -i -e {s/\(set ::env(PREV_NETLIST)\).*/\1 \/openLANE_flow\/designs\/uart\/runs\/14-04_11-37\/results\/synthesis\/uart.synthesis.v/} /openLANE_flow/designs/uart/runs/14-04_11-37/config.tcl"
+
+Wed Apr 14 12:27:42 UTC 2021 - Executing "sta /openLANE_flow/scripts/sta.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/synthesis/10-opensta_post_resizer"
+
+Wed Apr 14 12:27:43 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_opendp.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/placement/11-opendp.log"
+
+Wed Apr 14 12:27:45 UTC 2021 - Executing "bash /openLANE_flow/scripts/klayout/scrotLayout.sh /home/mariam/openlane/pdks/sky130A/libs.tech/klayout/sky130A.lyt /openLANE_flow/designs/uart/runs/14-04_11-37/results/placement/uart.placement.def |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/klayout/12-klayout.scrot.log"
+
+Wed Apr 14 12:27:57 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_cts.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/cts/13-cts.log"
+
+Wed Apr 14 12:29:47 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_write_verilog.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/14-write_verilog.log"
+
+Wed Apr 14 12:29:49 UTC 2021 - Executing "sed -i -e {s/\(set ::env(CURRENT_NETLIST)\).*/\1 \/openLANE_flow\/designs\/uart\/runs\/14-04_11-37\/results\/synthesis\/uart.synthesis_cts.v/} /openLANE_flow/designs/uart/runs/14-04_11-37/config.tcl"
+
+Wed Apr 14 12:29:49 UTC 2021 - Executing "sed -i -e {s/\(set ::env(PREV_NETLIST)\).*/\1 \/openLANE_flow\/designs\/uart\/runs\/14-04_11-37\/results\/synthesis\/uart.synthesis_optimized.v/} /openLANE_flow/designs/uart/runs/14-04_11-37/config.tcl"
+
+Wed Apr 14 12:29:49 UTC 2021 - Executing "bash /openLANE_flow/scripts/klayout/scrotLayout.sh /home/mariam/openlane/pdks/sky130A/libs.tech/klayout/sky130A.lyt /openLANE_flow/designs/uart/runs/14-04_11-37/results/cts/uart.cts.def |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/klayout/15-klayout.scrot.log"
+
+Wed Apr 14 12:30:14 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_groute.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/routing/16-fastroute.log"
+
+Wed Apr 14 12:30:23 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_fill.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/routing/17-addspacers.log"
+
+Wed Apr 14 12:30:25 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_write_verilog.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/18-write_verilog.log"
+
+Wed Apr 14 12:30:27 UTC 2021 - Executing "sed -i -e {s/\(set ::env(CURRENT_NETLIST)\).*/\1 \/openLANE_flow\/designs\/uart\/runs\/14-04_11-37\/results\/synthesis\/uart.synthesis_preroute.v/} /openLANE_flow/designs/uart/runs/14-04_11-37/config.tcl"
+
+Wed Apr 14 12:30:27 UTC 2021 - Executing "sed -i -e {s/\(set ::env(PREV_NETLIST)\).*/\1 \/openLANE_flow\/designs\/uart\/runs\/14-04_11-37\/results\/synthesis\/uart.synthesis_cts.v/} /openLANE_flow/designs/uart/runs/14-04_11-37/config.tcl"
+
+Wed Apr 14 12:30:27 UTC 2021 - Executing "envsubst < /openLANE_flow/scripts/tritonRoute.param > /openLANE_flow/designs/uart/runs/14-04_11-37/tmp/routing/19-tritonRoute.param"
+
+Wed Apr 14 12:30:27 UTC 2021 - Executing "TritonRoute /openLANE_flow/designs/uart/runs/14-04_11-37/tmp/routing/19-tritonRoute.param |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/routing/19-tritonRoute.log"
+
+Wed Apr 14 12:30:36 UTC 2021 - Executing "python3 /openLANE_flow/scripts/tr2klayout.py -i /openLANE_flow/designs/uart/runs/14-04_11-37/reports/routing/19-tritonRoute.drc -o /openLANE_flow/designs/uart/runs/14-04_11-37/reports/routing/19-tritonRoute.klayout.xml --design-name uart"
+
+Wed Apr 14 12:30:36 UTC 2021 - Executing "bash /openLANE_flow/scripts/klayout/scrotLayout.sh /home/mariam/openlane/pdks/sky130A/libs.tech/klayout/sky130A.lyt /openLANE_flow/designs/uart/runs/14-04_11-37/results/routing/uart.def |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/klayout/20-klayout.scrot.log"
+
+Wed Apr 14 12:30:42 UTC 2021 - Executing "python3 /openLANE_flow/scripts/spef_extractor/main.py -l /openLANE_flow/designs/uart/runs/14-04_11-37/tmp/merged_unpadded.lef -d /openLANE_flow/designs/uart/runs/14-04_11-37/results/routing/uart.def -mw L -ec 1 |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/routing/21-spef_extraction.log"
+
+Wed Apr 14 12:30:42 UTC 2021 - Executing "sta /openLANE_flow/scripts/sta.tcl |& tee >&@stdout /openLANE_flow/designs/uart/runs/14-04_11-37/logs/synthesis/22-opensta_spef"
+

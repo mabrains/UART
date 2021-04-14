@@ -1,0 +1,19 @@
+Design Name: uart
+Run Directory: /openLANE_flow/designs/uart/runs/14-04_15-46
+----------------------------------------
+
+Magic DRC Summary:
+Source: /openLANE_flow/designs/uart/runs/14-04_15-46/reports/magic//39-magic.drc
+Total Magic DRC violations is 0
+----------------------------------------
+
+LVS Summary:
+Source: /openLANE_flow/designs/uart/runs/14-04_15-46/results/lvs/uart.lvs_parsed.lef.log
+LVS reports no net, device, pin, or property mismatches.
+Total errors = 0
+----------------------------------------
+
+Antenna Summary:
+Source: /openLANE_flow/designs/uart/runs/14-04_15-46/reports/routing//41-antenna.rpt
+Number of pins violated: 0
+Number of nets violated: 0

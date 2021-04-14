@@ -1,0 +1,6 @@
+VPWR power 1.8
+VGND power 0.0
+#define std_input min@VGND max@VPWR
+UARTn_CTS input std_input
+UARTn_RXD input std_input
+clk input std_input
