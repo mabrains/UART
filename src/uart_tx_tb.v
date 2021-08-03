@@ -1,18 +1,22 @@
 `timescale 1ns/1ns
 module uart_tx_tb();
 
-
 reg clk; 
-reg UARTn_CTS;
+reg UART_STA_TX;
+reg [7:0] UART_TxREG;
 
-wire UARTn_TXD; //the serial_out transmitting pin
+wire UART_TXD; //the serial_out transmitting pin
 
-parameter period= 6.66,
-          delay = 104166;
-       // delay= 30;
+parameter period = 10,
+          delay= 30;
 
 //DUT_instantiation
-uart_tx u1_tx ( .clk(clk) , .UARTn_CTS(UARTn_CTS), .UARTn_TXD(UARTn_TXD) );
+uart_tx u1_tx ( 
+	.clk(clk) , 
+	.UART_STA_TX(UART_STA_TX), 
+	.UART_TxREG(UART_TxREG), 
+	.UART_TXD(UART_TXD) 
+);
 
 
 //clk_gen
@@ -26,18 +30,18 @@ end
 //stimilus_gen
 initial
 begin
-#(delay) UARTn_CTS =1;
-
+#(delay) UART_STA_TX = 1;
+UART_TxREG = 8'b10_10_10_10;
 end
 
 
 
 initial
-
 begin
-$time_format(-9,3,"ns");
-$display("        ", "     Time clk UART_CTS UARTn_TXD");
-$monitor("%t %b %b %b " , $realtime, clk, UARTn_CTS, UARTn_TXD);
+$timeformat(-9,2,"ns",7);
+$monitor("t=%5d rst=%b act=%b updown=%b count=%d overflow=%b \n" , $time, rst, act, updown, count, overflow, );
+//$display("        ", "     Time clk UART_CTS UARTn_TXD");
+$monitor("%t=%5d clk=%b UARTn_CTS=%b UART_TxREG=%b UARTn_TXD=%b " , $time, clk, UARTn_CTS, UARTn_TXD);
 end
 
 endmodule

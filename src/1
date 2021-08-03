@@ -1,10 +1,8 @@
-`timescale 1ns / 1ps
 module uart_baud_generator(clk, rst, Baud_Rate, tick);  //baud generator block, controlled from the sw level, the default value is 9600
 
 parameter clock_frequency = 'd100_000_000;
 
-input clk;
-input rst;
+input clk, rst;
 input [16:0] Baud_Rate;
 output[3:0] tick;   //for 16x higher than the baud rate for correct bit sampling
 
@@ -19,57 +17,54 @@ always @(posedge clk or negedge rst)
 	else
                 state = 1'b1;
 
-always @ (posedge clk or Baud_Rate) begin
+always @ (posedge clk) begin
 
 if (state)
-
 if(count == acc )
 begin
-//$monitor("time = %d \n", $time,);
-tick <= tick + 4'b0001;  //until it reaches 4'b1111 and overflows to reach 4'b0000 again
-count = 14'b000_000_000;
+tick <= tick+ 4'b0001;  //until it reaches 4'b1111 and overflows to reach 4'b0000 again
+count = 17'b000_000_000;
 end
 else
-//	$monitor("time = %d, tick = %b \n", $time, tick,);
-count <= count + 14'b000_000_001;
+count <= count +17'b000_000_001;
 
 end
 
 
-always @(posedge clk or Baud_Rate) begin
+always @(posedge clk) begin
 	case (Baud_Rate)
 		'd1200: begin
-			acc = 'd5207;
+			acc = 'd5208;
 		end
 		'd2400: begin
-			acc = 'd2603;
+			acc = 'd2604;
 		end
 		'd4800: begin
-			acc = 'd1301;
+			acc = 'd1302;
 		end
 		'd9600: begin
-			acc = 'd650;
+			acc = 'd651;
 		end
 		'd14400: begin
-			acc = 'd433;
+			acc = 'd434;
 		end
 		'd19200: begin
-			acc = 'd325;
+			acc = 'd326;
 		end
 		'd28800: begin
-			acc = 'd216;
+			acc = 'd217;
 		end
 		'd38400: begin
-			acc = 'd162;
+			acc = 'd163;
 		end
 		'd57600: begin
-			acc = 'd108;
+			acc = 'd109;
 		end
 		'd115200: begin
-			acc = 'd53;
+			acc = 'd54;
 		end
 		default: begin
-			acc = 'd650;
+			acc = 'd651;
 		end
 
 	endcase
