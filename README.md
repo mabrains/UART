@@ -3,10 +3,10 @@ UART From RTL to GDS-II
 The Design's Feautures:
 | Feauture               |         value                                     |
 | -----------            | ------------                                      |
-| Frequency              | Generic- specific for the hardware integrated with|
-| Baud Rate              | Generic- specified by the user                    |
+| Frequency              | Generic                                           |
+| Baud Rate              | Generic - specified by the user                   |
 | Sampling Rate          | 16x                                               |
-|  Divisor Value         | calculated internally by the logic                |
+|  Divisor Value         | Calculated Internally by The Logic                |
 | Core Utilization Ratio | 20%                                               |
 | Area                   | 83.315* 94.035 μm^2                               |
   
@@ -27,10 +27,10 @@ The Design's Feautures:
 * After declaring the beginig of communication, data bits are sent followed by parity bit as a check followed by an end bit that declares the end of communication.
 
 **_The Baud Rate Generator Logic_**
-* This logic is generic and can work with different clock rate-values and different baud rates specified by the user.
-* This Logic counts the number of baud pulses within the original clock specified by the user. 
-* This value is the total number of the original clock pulses per bit transmitted, by the baud rate specified by the user.
-* This value will be shifted 8 times(divided by 16) for getting the divisor value.
+* This logic is generic and can work with different clock rate-values and, different baud rates specified by the user.
+* This Logic counts the number of baud pulses within the original clock. 
+* This value is the total number of pulses per bit.
+* This value will be shifted 8 times to the right (/16) for getting the divisor value.
 * The divisor value is used for generating the pulse used for sampling in the right time for transmission. . 
 
 ## PnR flow using openlane:
