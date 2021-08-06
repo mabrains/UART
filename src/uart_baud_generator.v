@@ -113,7 +113,7 @@ always @(posedge clk or Baud_Rate) begin
 		'd57600: begin
 			acc = 'd108;
 		end
-		'd115200: begin
+		'd115200: begin //the highest rate needs 18 bit register for presenting it
 			acc = 'd53;
 		end
 		default: begin
