@@ -41,15 +41,10 @@ end
 */
 ////////////////////////////////////////////////////////////////////////The Baud Rate Generator////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////tick counts until over flow and then returns to zero, pulses from zero to zero///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////again are the number of pulses per bit, above we use the "tick_spike" for//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////sampling in the middle of the bit duration, middle of tick at tick =8//////////////////////////////////////////////////////////////////////////////
-always @ (Baud_Rate) begin
-tick = 4'b0;
-tick_spike = 4'b0;
-end
-
 always @ (posedge clk) begin
-	if(tick_spike > 4'b1010) begin
-              tick_spike = 4'b0;
-      end
+	if(tick_spike > 4'b1011) begin
+ 60             tick_spike = 4'b0;
+ 61     end
 
 end
 
@@ -68,12 +63,15 @@ begin
 tick <= tick + 4'b0001;  //until it reaches 4'b1111 and overflows to reach 4'b0000 again
  if(tick == 4'b0111) begin
     tick_spike <= tick_spike + 4'b0001;
+//    if(tick_spike > 4'b1011) begin
+//	    tick_spike = 4'b0;
+  //  end
 end
 
 count = 14'b000_000_000;
 //if ($time == 416640)  
 //$display("YES");
-$monitor("time = %t, tick = %b, tick_spike = %b, Baud_Rate = %d \n", $time, tick, tick_spike, Baud_Rate);
+$monitor("time = %t, tick = %b, tick_spike = %b \n", $time, tick, tick_spike);
 end
 
 else

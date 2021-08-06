@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ns / 1ns
 module uart_baud_clk_tb();
 
 reg clk;
@@ -21,47 +21,58 @@ uart_baud_generator uart_tb (
 );
 
 initial begin
-	clk = 1;
+	clk = 0;
 	rst = 1;
 end
 
 //clk_gen
 always 
 begin
-#(period/2) clk = 1;
 #(period/2) clk = 0;
+#(period/2) clk = 1;
 end
 
-//test 1
-//always @ (tick) 
-//	if (tick ==4'b1111)
+always @(tick_spike) begin
+	if (tick_spike == 4'b0011 && $time == 'd2083200) begin
+                $display("%c[1;34m",27);               //replace 1 by 5 for the coolest format:)
+		$display("PASSED FIRST TEST");
+
 //		$finish;
+end
+	if (tick_spike == 4'b1011) begin
+		$display("%c[1;34m",27);               //replace 1 by 5 for the coolest format:)
+                $display("PASSED SECOND TEST");
+ 
+            //    $finish;
 
-//always @ (clk) begin
-//	$monitor("time = %t, tick_spike = %b \n", $time, tick_spike, );
-//	if (tick_spike == 4'b0010) begin
-//		$finish;
-//	end
-//end
+
+	end
+
+	if (tick_spike == 4'b1010) begin
+                  $display("%c[1;34m",27);               //replace 1 by 5 for the coolest format:)
+                  $display("PASSED THIRD TEST");
+ 
+                  $finish;
+ 
+ 
+          end
 
 
+	end
 //Baud_Rate stimulus
 initial 
 begin
 Baud_Rate = 'd1200;
-repeat (100_000_000) @(posedge clk);
     $display("Baud_Rate = 1200");
     
 
-/*
-Baud_Rate = 'd2400;
-repeat (150_000_000) @(posedge clk);
+#2083210 Baud_Rate = 'd2400;
     $display("Baud_Rate = 2400");
 
+#6457930
 Baud_Rate = 'd4800;
-repeat (150_000_000) @(posedge clk);
     $display("Baud_Rate = 4800");
-
+/*
 Baud_Rate = 'd9600;
 repeat (150_000_000) @(posedge clk);
     $display("Baud_Rate = 9600");
