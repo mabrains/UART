@@ -26,12 +26,47 @@ The Design's Feautures:
 * When we detect this 0 at the active edge of the original clock, we check it again at the middle of the bit duration again but relative to the new generated clock to know for sure that this is the declaration of the communication line.
 * After declaring the beginig of communication, data bits are sent followed by parity bit as a check followed by an end bit that declares the end of communication.
 
-**_The Baud Rate Generator Logic_**
-* This logic is generic and can work with different clock rate-values and, different baud rates specified by the user.
-* This Logic counts the number of baud pulses within the original clock. 
-* This value is the total number of pulses per bit.
-* This value will be shifted 8 times to the right (/16) for getting the divisor value.
-* The divisor value is used for generating the pulse used for sampling in the right time for transmission. . 
+**_The Transmitter Top Module_**
+--------------------------------
+
+![Screen Shot 2021-08-08 at 12 12 57 AM](https://user-images.githubusercontent.com/36249257/128615093-28810777-810e-4a23-80e3-9d774e7c5fcb.png)
+
+**_The Transmitter Finite State Machine_**
+------------------------------------------
+
+![Screen Shot 2021-08-08 at 12 22 14 AM](https://user-images.githubusercontent.com/36249257/128615191-caff9ad6-9396-46ee-b1ad-edd55469a4d3.png)
+
+* The FSM implemented is configured for: 
+  * 1 start bit
+  * Flexibility for (5-9) data bit frame configuring from the user end
+  * No or ‘1’ parity bit
+  * And 1 or 2 stop bits
+
+**_Baud Rate Generator 1_**
+----------------------------
+
+* Divisor = Clock Frequency/ (16 * Baud Rate)
+* Baud Rates are standards that the serial communication techniques use for data transfer
+* 16x is the oversampling rate, means a generated clock faster 16 times than the clock rate is used 
+* The number of pulses per every edge for the new generated clock is called the divisor
+* In UART, we transmit(sample) on the half of the new generated clock cycle 
+* In the design, we use a ‘case statement’ for specifying different divisor values for a certain clock frequency
+* Then we use this divisor in a 4-bit counter(up- counter), that reaches “1111” then overflows and returns back to “0000”
+* This is equivalent to the bit duration
+* When the counter reaches “1000”, in HDL it needs  to be “1001”, at this value we send our data
+* So, the divisor is the number of bits per count in the counter
+* You will find this in src/uart_baud_generator.v 
+
+**_Baud Rate Generator 2_**
+-----------------------------
+
+* In this, we tried to make things more generic and flexible to be used with different clock frequencies
+* Here, we calculate the divisor every time the user specify a certain baud rate to send on
+* So, here the idea of the logic, is that we calculate the number of baud bits in the original clock
+* For example, we can calculate how many baud bits(ex: 9600) in a 100 Mhz clock, this is done inside the logic and this gives us the number of pulses per bit
+* Then by shifting this value 8 times to the right this is equivalent to dividing by 16, this means we get the divisor value 
+* After getting the divisor value the idea is the same, we make a 4-bit up counter and count till we reach 1000, “1001” in HDL, and transmit/sample at this point
+* You will find this in src/baud_rate_generator_block.v
 
 ## PnR flow using openlane:
 
