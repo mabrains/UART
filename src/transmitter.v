@@ -1,0 +1,200 @@
+`timescale 1ns / 1ns
+module transmitter(sampling_pulse, the_new_generated_clock, Transmitter_Holding_Register, Transmitter_Status, TX);
+
+parameter  IDLE      = 5'b00001,
+           start_bit = 5'b00010,
+           data_bits = 5'b00100,
+           parity_bit= 5'b01000,
+           stop_bit  = 5'b10000,
+	   five_data_bits = 4'b0101, 
+	   six_data_bits = 4'b0110,
+	   seven_data_bits = 4'b0111, 
+	   eight_data_bits = 4'b1000, 
+	   nine_data_bits = 4'b1001,
+	   no_parity = 1'b0,
+	   one_parity = 1'b1,
+	   one_stop_bit = 2'b1,
+	   two_stop_bits = 2'b10;
+
+
+input [3:0] sampling_pulse;
+input the_new_generated_clock;
+input [31:0] Transmitter_Holding_Register;
+input [31:0] Transmitter_Status;
+output TX;
+
+reg TX;
+reg [3:0] index = 4'b0;
+reg [1:0] temp = 2'b0;
+reg [3:0] number_of_data_bits = 4'b0;
+
+reg [4:0] next_state;
+reg [4:0] current_state;
+
+wire UART_STA_TX;
+wire [3:0] data_bits_controlling_signals;
+wire parity_contrlling_signals;
+
+assign UART_STA_TX = Transmitter_Status[0]; 
+assign data_bits_controlling_signals = Transmitter_Status[4:1]; 
+assign parity_contrlling_signals = Transmitter_Status[5];
+assign stop_controlling_signals = Transmitter_Status[7:6];
+
+	always @ (sampling_pulse) begin
+
+	if(!UART_STA_TX) begin
+		current_state <= IDLE; end
+		else begin
+			current_state <= start_bit; end
+	end
+
+	always @ (sampling_pulse) begin
+		 case (current_state)
+			 IDLE: begin
+				 TX = 1'b1;
+				 if(!UART_STA_TX) begin
+					 next_state <= IDLE; end
+					 else begin
+						 next_state <= start_bit; end
+			 end
+
+			 start_bit: begin
+				 if(sampling_pulse == 4'b1000) begin
+					 TX = 1'b0;
+					 next_state = data_bits;
+				 end
+				 else begin
+					 next_state = start_bit;
+				 end
+			 end 
+
+			 data_bits: begin
+				 if(sampling_pulse == 4'b1000) begin
+					 if(data_bits_controlling_signals == five_data_bits) begin
+						 if(index < five_data_bits) begin
+						 TX <= Transmitter_Holding_Register[index];
+						 index <= index + 1; 
+						 next_state <= data_bits;
+					 end
+						 else begin
+							 next_state <= parity_bit;
+					 end
+				 end
+					 else if (data_bits_controlling_signals == six_data_bits) begin
+						 if(index < six_data_bits) begin
+							 TX <= Transmitter_Holding_Register[index];
+							 index <= index + 1;
+							 next_state <= data_bits;
+						 end
+						 else begin
+							 next_state <= parity_bit;
+						 end
+					 end
+
+					 else if (data_bits_controlling_signals == seven_data_bits) begin
+						 if(index < seven_data_bits) begin
+							 TX <= Transmitter_Holding_Register[index];
+                                                 	index <= index + 1;
+                                                 	next_state <= data_bits;
+					       	end
+						else begin
+							next_state <= parity_bit;
+						end
+					end
+					else if(data_bits_controlling_signals == eight_data_bits) begin
+						if(index < eight_data_bits) begin
+                                                         TX <= Transmitter_Holding_Register[index];
+                                                        index <= index + 1;
+                                                        next_state <= data_bits;
+                                                end
+                                                else begin
+                                                        next_state <= parity_bit;
+                                                end
+
+					end
+					else if(data_bits_controlling_signals == nine_data_bits) begin
+						if(index < nine_data_bits) begin
+                                                         TX <= Transmitter_Holding_Register[index];
+                                                        index <= index + 1;
+                                                        next_state <= data_bits;
+                                                end
+                                                else begin
+                                                        next_state <= parity_bit;
+                                                end
+					end
+
+					else begin
+						next_state <= IDLE;
+					end
+			 end
+
+			 else begin
+				 next_state <= data_bits;
+			 end
+		 end
+
+		 parity_bit: begin
+			 if(sampling_pulse == 4'b1000) begin
+				 if(parity_contrlling_signals == no_parity) begin
+					 next_state <= stop_bit;
+				 end
+				 else begin
+					 if(data_bits_controlling_signals == five_data_bits) begin
+						 TX <= ^Transmitter_Holding_Register[five_data_bits-1 :0];
+						 next_state <= stop_bit;
+					 end
+					 else if (data_bits_controlling_signals == six_data_bits)  begin
+						 TX <= ^Transmitter_Holding_Register[six_data_bits-1 :0];
+						 next_state <= stop_bit;
+					 end
+					 else if (data_bits_controlling_signals == seven_data_bits) begin 
+						 TX <= ^Transmitter_Holding_Register[seven_data_bits-1 :0];
+						 next_state <= stop_bit;
+					 end
+					 else if (data_bits_controlling_signals == eight_data_bits) begin
+						 TX <= ^Transmitter_Holding_Register[eight_data_bits-1 :0];
+						 next_state <= stop_bit;
+					 end
+					 else if (data_bits_controlling_signals == nine_data_bits) begin
+						 TX <= ^Transmitter_Holding_Register[nine_data_bits-1 :0];
+						 next_state <= stop_bit;
+					 end
+					 else begin
+						 next_state = IDLE;
+					 end
+				 end
+			 end
+			 else begin
+				 next_state <= parity_bit;
+			 end
+
+		 end
+
+		 stop_bit: begin
+			 if(sampling_pulse == 4'b1000) begin
+				 if(stop_controlling_signals == one_stop_bit) begin
+					 TX <= 1'b1;
+					 next_state <= IDLE; 
+				 end
+				 else if (stop_controlling_signals == two_stop_bits) begin
+					 if(temp < 2'b10) begin
+						 TX <= 1'b1;
+						 temp <= temp + 1;
+						 next_state <= stop_bit; 
+					 end
+					 else begin
+						 next_state <= IDLE;
+					 end
+				 end
+				 else begin 
+					 next_state <= IDLE;
+				 end
+			 end
+			 else begin
+				 next_state <= stop_bit;
+			 end
+		 end
+	 endcase
+ end
+
+endmodule
