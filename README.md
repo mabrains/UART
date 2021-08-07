@@ -1,14 +1,14 @@
 UART From RTL to GDS-II
 -----------------------
 The Design's Feautures:
-| Feauture               |         value       |
-| -----------            | ------------        |
-| Frequency              | 150 MHZ             |
-| Baud Rate              | 9600                |
-| Sampling Rate          | 16x                 |
-|  Divisor Value         | 977                 |
-| Core Utilization Ratio | 20%                 |
-| Area                   | 83.315* 94.035 μm^2 |
+| Feauture               |         value                                     |
+| -----------            | ------------                                      |
+| Frequency              | Generic                                           |
+| Baud Rate              | Generic - specified by the user                   |
+| Sampling Rate          | 16x                                               |
+|  Divisor Value         | Calculated Internally by The Logic                |
+| Core Utilization Ratio | 20%                                               |
+| Area                   | 83.315* 94.035 μm^2                               |
   
 **_Description_** 
   --------------
@@ -25,6 +25,13 @@ The Design's Feautures:
 * The line is normally high until we send the start bit which is equal to 0.
 * When we detect this 0 at the active edge of the original clock, we check it again at the middle of the bit duration again but relative to the new generated clock to know for sure that this is the declaration of the communication line.
 * After declaring the beginig of communication, data bits are sent followed by parity bit as a check followed by an end bit that declares the end of communication.
+
+**_The Baud Rate Generator Logic_**
+* This logic is generic and can work with different clock rate-values and, different baud rates specified by the user.
+* This Logic counts the number of baud pulses within the original clock. 
+* This value is the total number of pulses per bit.
+* This value will be shifted 8 times to the right (/16) for getting the divisor value.
+* The divisor value is used for generating the pulse used for sampling in the right time for transmission. . 
 
 ## PnR flow using openlane:
 
