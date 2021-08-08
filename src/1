@@ -1,72 +1,83 @@
-module uart_baud_generator(clk, rst, Baud_Rate, tick);  //baud generator block, controlled from the sw level, the default value is 9600
+`timescale 1ns / 1ns
+module uart_baud_generator2 (clk, rst, Baud_Rate_Holding_Register, clock_frequency_register, sampling_pulse);
 
-parameter clock_frequency = 'd100_000_000;
+parameter IDLE = 3'b001,
+          Sampling_Pulse_Generation_Logic = 3'b010,
+	  Divisor_Logic = 3'b100;
 
-input clk, rst;
-input [16:0] Baud_Rate;
-output[3:0] tick;   //for 16x higher than the baud rate for correct bit sampling
+input clk, rst; 
+input [31:0] Baud_Rate_Holding_Register;
+input [31:0] clock_frequency_register;
+output [3:0] sampling_pulse;
+//output the_new_generated_clock;
+reg sampling_pulse = 4'b0;
+//reg the_new_generated_clock = 1'b0; // the baud clk
 
-reg [13:0] count = 14'b0;
-reg tick = 4'b0;
-reg [13:0] acc= 14'b0;       //accumulator * 16 = number of pulses per bit,  this value of number of pulses in 1 second is the baud rate required
-reg state; //1 baud rate block is on else off
+//reg [3:0] sampling_pulse_internal_signal = 4'b0;
+reg [2:0] current_state, next_state;
+reg  [31:0] the_Baud_Rate_counter = 32'b0;  //for toggling the new clock when it reaches it's maximum value       
+reg [13:0] number_of_pulses_per_bit = 14'b0;
+reg [13:0] divisor = 14'b0;
+reg [13:0] divisor_count = 14'b0;
+reg [31:0] counter = 'b0;
+//wire [31:0] Baud_Rate_Holding_Register_internal_signal;
+//wire [31:0] clock_frequency_register_internal_signal;
 
-always @(posedge clk or negedge rst)
-	if(!rst)
-		state = 1'b0;
-	else
-                state = 1'b1;
+// A continuous assignment dividing the baud rate by 2
+// assign Baud_Rate_Holding_Register_internal_signal = Baud_Rate_Holding_Register;
+// assign Baud_Rate_Holding_Register_internal_signal = {1'b0, Baud_Rate_Holding_Register[31:1]} - 1 ;       //divide baud rate by 2
+// assign clock_frequency_register_internal_signal = {1'b0, clock_frequency_register[31:1]};
 
-always @ (posedge clk) begin
-
-if (state)
-if(count == acc )
-begin
-tick <= tick+ 4'b0001;  //until it reaches 4'b1111 and overflows to reach 4'b0000 again
-count = 17'b000_000_000;
+//controlling sequential block
+always @ (posedge clk or negedge rst) begin
+	if(!rst) begin
+		current_state = IDLE; end
+		else begin
+	                current_state = Sampling_Pulse_Generation_Logic;
+	       	end
 end
-else
-count <= count +17'b000_000_001;
+/*always @ (posedge clk) begin
+$monitor("Baud_Rate_Holding_Register = %d ,clock_frequency_register = %d \n", Baud_Rate_Holding_Register, clock_frequency_register);
+$finish;
+end*/
+// FSM for organizing
+always @ (posedge clk)  begin
+	case (current_state)
+		IDLE: begin
+			sampling_pulse = 4'b0;
+			end
+		
+		Sampling_Pulse_Generation_Logic: begin
+                                  if (counter < (clock_frequency_register - 1)) begin
+                                           counter <= counter + 1;
+					   if(the_Baud_Rate_counter == Baud_Rate_Holding_Register) begin
+					  number_of_pulses_per_bit <= number_of_pulses_per_bit + 1;
+					  $monitor("number_of_pulses_per_bit = %d, counter = %d, clock_frequency_register = %d, clock_frequency_register_internal_signal = %d, sampling_pulse = %b \n", number_of_pulses_per_bit, counter, clock_frequency_register, clock_frequency_register_internal_signal, sampling_pulse);
+				  end
+				  else begin
+                         
+						 the_Baud_Rate_counter <= the_Baud_Rate_counter + 32'b1;
+					 end
+				 end
+						 else begin
+							 current_state <= Divisor_Logic;
+						 end
+					 end
+					 Divisor_Logic: begin
+						 if(divisor_count == 'd10416) begin
+                                                     sampling_pulse <= sampling_pulse + 1;
+                                                       divisor_count = 'b0;
+				//	$monitor("Baud_Rate_Holding_Register = %d ,clock_frequency_register = %d \n", Baud_Rate_Holding_Register, clock_frequency_register);
+                                  //      $finish;
+                                               end
+                                       else begin
+                                               divisor_count <= divisor_count + 1;
+				       end
+			       end
 
-end
 
-
-always @(posedge clk) begin
-	case (Baud_Rate)
-		'd1200: begin
-			acc = 'd5208;
-		end
-		'd2400: begin
-			acc = 'd2604;
-		end
-		'd4800: begin
-			acc = 'd1302;
-		end
-		'd9600: begin
-			acc = 'd651;
-		end
-		'd14400: begin
-			acc = 'd434;
-		end
-		'd19200: begin
-			acc = 'd326;
-		end
-		'd28800: begin
-			acc = 'd217;
-		end
-		'd38400: begin
-			acc = 'd163;
-		end
-		'd57600: begin
-			acc = 'd109;
-		end
-		'd115200: begin
-			acc = 'd54;
-		end
 		default: begin
-			acc = 'd651;
-		end
-
+			next_state = IDLE; end
 	endcase
 end
 

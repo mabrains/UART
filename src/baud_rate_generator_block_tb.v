@@ -9,19 +9,19 @@ reg clk, rst;
 reg [31:0] Baud_Rate_Holding_Register;
 reg [31:0] clock_frequency_register;
 wire [3:0] sampling_pulse;
-wire the_new_generated_clock;
+//wire the_new_generated_clock;
 
 uart_baud_generator2 u1 (
 	.clk(clk), 
 	.rst(rst),
        	.Baud_Rate_Holding_Register(Baud_Rate_Holding_Register),
        	.clock_frequency_register(clock_frequency_register), 
-	.sampling_pulse(sampling_pulse), 
-	.the_new_generated_clock(the_new_generated_clock)
+	.sampling_pulse(sampling_pulse)
+//	.the_new_generated_clock(the_new_generated_clock)
 	);
 
 
-	initial clk = 0;
+	initial clk = 1;
 
 	always #(period/2) clk <= ~clk;
 

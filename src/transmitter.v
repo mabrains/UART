@@ -1,5 +1,5 @@
 `timescale 1ns / 1ns
-module transmitter(sampling_pulse, the_new_generated_clock, Transmitter_Holding_Register, Transmitter_Status, TX);
+module transmitter(clk, sampling_pulse, Transmitter_Holding_Register, Transmitter_Status, TX);
 
 parameter  IDLE      = 5'b00001,
            start_bit = 5'b00010,
@@ -13,17 +13,17 @@ parameter  IDLE      = 5'b00001,
 	   nine_data_bits = 4'b1001,
 	   no_parity = 1'b0,
 	   one_parity = 1'b1,
-	   one_stop_bit = 2'b1,
+	   one_stop_bit = 2'b01,
 	   two_stop_bits = 2'b10;
 
-
+input clk;
 input [3:0] sampling_pulse;
-input the_new_generated_clock;
 input [31:0] Transmitter_Holding_Register;
 input [31:0] Transmitter_Status;
 output TX;
 
 reg TX;
+
 reg [3:0] index = 4'b0;
 reg [1:0] temp = 2'b0;
 reg [3:0] number_of_data_bits = 4'b0;
@@ -40,12 +40,13 @@ assign data_bits_controlling_signals = Transmitter_Status[4:1];
 assign parity_contrlling_signals = Transmitter_Status[5];
 assign stop_controlling_signals = Transmitter_Status[7:6];
 
-	always @ (sampling_pulse) begin
+	always @ (posedge clk) begin
 
 	if(!UART_STA_TX) begin
+		TX = 1'b1;
 		current_state <= IDLE; end
 		else begin
-			current_state <= start_bit; end
+			current_state <= next_state; end
 	end
 
 	always @ (sampling_pulse) begin
@@ -193,6 +194,9 @@ assign stop_controlling_signals = Transmitter_Status[7:6];
 			 else begin
 				 next_state <= stop_bit;
 			 end
+		 end
+		 default: begin
+			 next_state <= IDLE;
 		 end
 	 endcase
  end
