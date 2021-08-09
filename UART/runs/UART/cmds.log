@@ -1,0 +1,34 @@
+Mon Aug 09 16:11:32 UTC 2021 - Executing "python3 /openLANE_flow/scripts/extract_metal_layers.py -t /home/mariam/mabrains/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/techlef/sky130_fd_sc_hd.tlef -o /project/openlane/UART/runs/UART/tmp/met_layers_list.txt"
+
+Mon Aug 09 16:11:32 UTC 2021 - Executing "/openLANE_flow/scripts/mergeLef.py -i /home/mariam/mabrains/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/techlef/sky130_fd_sc_hd.tlef {/home/mariam/mabrains/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_ef_sc_hd__decap_12.lef /home/mariam/mabrains/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_ef_sc_hd__fill_12.lef /home/mariam/mabrains/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_ef_sc_hd__fakediode_2.lef /home/mariam/mabrains/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_fd_sc_hd.lef} -o /project/openlane/UART/runs/UART/tmp/merged_unpadded.lef |& tee >&@stdout"
+
+Mon Aug 09 16:11:33 UTC 2021 - Executing "/openLANE_flow/scripts/libtrim.pl /home/mariam/mabrains/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib /project/openlane/UART/runs/UART/tmp/trimmed.lib.exclude.list > /project/openlane/UART/runs/UART/tmp/trimmed.lib"
+
+Mon Aug 09 16:11:33 UTC 2021 - Executing "echo {openlane v0.18} > /project/openlane/UART/runs/UART/OPENLANE_VERSION"
+
+Mon Aug 09 16:11:33 UTC 2021 - Executing "sed -E {s/^([[:space:]]+)pg_pin(.*)/\1pin\2\n\1    direction : "inout";/g} /home/mariam/mabrains/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib > /project/openlane/UART/runs/UART/tmp/sky130_fd_sc_hd__tt_025C_1v80.no_pg.lib"
+
+Mon Aug 09 16:11:33 UTC 2021 - Executing "yosys -c /openLANE_flow/scripts/synth.tcl -l /project/openlane/UART/runs/UART/logs/synthesis/1-yosys.log |& tee >&@stdout"
+
+Mon Aug 09 16:11:34 UTC 2021 - Executing "sed -i -e {s/\(set ::env(CURRENT_NETLIST)\).*/\1 \/project\/openlane\/UART\/runs\/UART\/results\/synthesis\/transmitter_top_module.synthesis.v/} /project/openlane/UART/runs/UART/config.tcl"
+
+Mon Aug 09 16:11:34 UTC 2021 - Executing "sed -i -e {s/\(set ::env(PREV_NETLIST)\).*/\1 0/} /project/openlane/UART/runs/UART/config.tcl"
+
+Mon Aug 09 16:11:34 UTC 2021 - Executing "sed -i /defparam/d /project/openlane/UART/runs/UART/results/synthesis/transmitter_top_module.synthesis.v"
+
+Mon Aug 09 16:11:34 UTC 2021 - Executing "sta /openLANE_flow/scripts/sta.tcl |& tee >&@stdout /project/openlane/UART/runs/UART/logs/synthesis/2-opensta"
+
+Mon Aug 09 16:11:35 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_floorplan.tcl |& tee >&@stdout /project/openlane/UART/runs/UART/logs/floorplan/3-verilog2def.openroad.log"
+
+Mon Aug 09 16:11:37 UTC 2021 - Executing "python3 /openLANE_flow/scripts/io_place.py --input-lef /project/openlane/UART/runs/UART/tmp/merged.lef --input-def /project/openlane/UART/runs/UART/tmp/floorplan/3-verilog2def_openroad.def --config /project/openlane/UART/pin_order.cfg --hor-layer 4 --ver-layer 3 --ver-width-mult 2 --hor-width-mult 2 --hor-extension -1 --ver-extension -1 --length 4 -o /project/openlane/UART/runs/UART/tmp/floorplan/4-ioPlacer.def |& tee /project/openlane/UART/runs/UART/logs/floorplan/4-place_io_ol.log >&@stdout"
+
+Mon Aug 09 16:11:37 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_tapcell.tcl |& tee >&@stdout /project/openlane/UART/runs/UART/logs/floorplan/5-tapcell.log"
+
+Mon Aug 09 16:11:39 UTC 2021 - Executing "bash /openLANE_flow/scripts/klayout/scrotLayout.sh /home/mariam/mabrains/openlane/pdks/sky130A/libs.tech/klayout/sky130A.lyt /project/openlane/UART/runs/UART/results/floorplan/transmitter_top_module.floorplan.def |& tee >&@stdout /project/openlane/UART/runs/UART/logs/klayout/6-klayout.scrot.log"
+
+Mon Aug 09 16:11:44 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_pdn.tcl |& tee >&@stdout /project/openlane/UART/runs/UART/logs/floorplan/7-pdn.log"
+
+Mon Aug 09 16:11:47 UTC 2021 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_replace.tcl |& tee >&@stdout /project/openlane/UART/runs/UART/logs/placement/8-replace.log"
+
+Mon Aug 09 16:11:48 UTC 2021 - Executing "python3 /openLANE_flow/report_generation_wrapper.py -d /project/openlane/UART -dn transmitter_top_module -t UART -o /project/openlane/UART/runs/UART/reports/final_summary_report.csv -m /project/openlane/UART/runs/UART/reports/manufacturability_report.rpt -rs /project/openlane/UART/runs/UART/reports/runtime_summary_report.rpt -r /project/openlane/UART/runs/UART"
+

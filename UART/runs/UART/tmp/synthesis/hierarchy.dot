@@ -1,0 +1,26 @@
+digraph "transmitter_top_module" {
+label="transmitter_top_module";
+rankdir="LR";
+remincross=true;
+n1 [ shape=diamond, label="sampling_pulse", color="black", fontcolor="black" ];
+n2 [ shape=octagon, label="TX", color="black", fontcolor="black" ];
+n3 [ shape=octagon, label="Transmitter_Status", color="black", fontcolor="black" ];
+n4 [ shape=octagon, label="Transmitter_Holding_Register", color="black", fontcolor="black" ];
+n5 [ shape=octagon, label="Baud_Rate_Holding_Register", color="black", fontcolor="black" ];
+n6 [ shape=octagon, label="clk", color="black", fontcolor="black" ];
+v0 [ label="100000000" ];
+c9 [ shape=record, label="{{<p5> Baud_Rate_Holding_Register|<p6> clk|<p7> clock_frequency_register|<p8> rst}|u2\nuart_baud_generator2|{<p1> sampling_pulse}}" ];
+x1 [ shape=record, style=rounded, label="<s0> 0:0 - 0:0 " ];
+x1:e -> c9:p8:w [arrowhead=odiamond, arrowtail=odiamond, dir=both, color="black", label=""];
+c10 [ shape=record, label="{{<p4> Transmitter_Holding_Register|<p3> Transmitter_Status|<p6> clk|<p1> sampling_pulse}|u1\ntransmitter|{<p2> TX}}" ];
+c9:p1:e -> n1:w [color="black", style="setlinewidth(3)", label=""];
+n1:e -> c10:p1:w [color="black", style="setlinewidth(3)", label=""];
+c10:p2:e -> n2:w [color="black", label=""];
+n3:e -> c10:p3:w [color="black", style="setlinewidth(3)", label=""];
+n3:e -> x1:s0:w [color="black", style="setlinewidth(3)", label=""];
+n4:e -> c10:p4:w [color="black", style="setlinewidth(3)", label=""];
+n5:e -> c9:p5:w [color="black", style="setlinewidth(3)", label=""];
+n6:e -> c10:p6:w [color="black", label=""];
+n6:e -> c9:p6:w [color="black", label=""];
+v0:e -> c9:p7:w [color="black", style="setlinewidth(3)", label=""];
+}

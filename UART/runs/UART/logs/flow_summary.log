@@ -1,0 +1,64 @@
+[INFO]: Current run directory is /project/openlane/UART/runs/UART
+[INFO]: Preparing LEF Files
+[INFO]: Extracting the number of available metal layers from /home/mariam/mabrains/openlane/pdks/sky130A/libs.ref/sky130_fd_sc_hd/techlef/sky130_fd_sc_hd.tlef
+[INFO]: The number of available metal layers is 6
+[INFO]: The available metal layers are li1 met1 met2 met3 met4 met5
+[INFO]: Merging LEF Files...
+[INFO]: Trimming Liberty...
+[INFO]: Generating Exclude List...
+[INFO]: Storing configs into config.tcl ...
+[INFO]: Preparation complete
+[INFO]: Running Synthesis...
+[INFO]: current step index: 1
+[INFO]: Changing netlist from 0 to /project/openlane/UART/runs/UART/results/synthesis/transmitter_top_module.synthesis.v
+[INFO]: Running Static Timing Analysis...
+[INFO]: current step index: 2
+[INFO]: Synthesis was successful
+[INFO]: Running Floorplanning...
+[INFO]: Running Initial Floorplanning...
+[INFO]: current step index: 3
+[INFO]: Core area width: 888.96
+[INFO]: Core area height: 578.24
+[INFO]: Changing layout from 0 to /project/openlane/UART/runs/UART/tmp/floorplan/3-verilog2def_openroad.def
+[INFO]: current step index: 4
+[INFO]: Changing layout from /project/openlane/UART/runs/UART/tmp/floorplan/3-verilog2def_openroad.def to /project/openlane/UART/runs/UART/tmp/floorplan/4-ioPlacer.def
+[INFO]: Running Tap/Decap Insertion...
+[INFO]: current step index: 5
+[INFO]: Changing layout from /project/openlane/UART/runs/UART/tmp/floorplan/4-ioPlacer.def to /project/openlane/UART/runs/UART/results/floorplan/transmitter_top_module.floorplan.def
+[INFO]: Taking a Screenshot of the Layout Using Klayout...
+[INFO]: current step index: 6
+[INFO]: Screenshot taken.
+[INFO]: Power planning the following nets
+[INFO]: Power: vccd1
+[INFO]: Ground: Vssd1
+[INFO]: Generating PDN...
+[INFO]: current step index: 7
+[INFO]: PDN generation was successful.
+[INFO]: Changing layout from /project/openlane/UART/runs/UART/results/floorplan/transmitter_top_module.floorplan.def to /project/openlane/UART/runs/UART/tmp/floorplan/7-pdn.def
+[INFO]: Running Placement...
+[INFO]: Running Global Placement...
+[INFO]: current step index: 8
+[ERROR]: during executing: "openroad -exit /openLANE_flow/scripts/openroad/or_replace.tcl |& tee >&@stdout /project/openlane/UART/runs/UART/logs/placement/8-replace.log"
+[ERROR]: Exit code: 1
+[ERROR]: Last 10 lines:
+child process exited abnormally
+
+[ERROR]: Please check openroad  log file
+[ERROR]: Dumping to /project/openlane/UART/runs/UART/error.log
+[INFO]: Calculating Runtime From the Start...
+[INFO]: Flow failed for transmitter_top_module/09-08_16-11 in 0h0m17s
+[INFO]: Generating Final Summary Report...
+[INFO]: Design Name: transmitter_top_module
+Run Directory: /project/openlane/UART/runs/UART
+Source not found.
+----------------------------------------
+
+LVS Summary:
+Source: /project/openlane/UART/runs/UART/results/lvs/transmitter_top_module.lvs_parsed.gds.log
+Source not found.
+----------------------------------------
+
+Antenna Summary:
+No antenna report found.
+[INFO]: check full report here: /project/openlane/UART/runs/UART/reports/final_summary_report.csv
+[ERROR]: Flow Failed.

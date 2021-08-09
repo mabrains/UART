@@ -1,0 +1,6 @@
+Using Techfile: /home/mariam/mabrains/openlane/pdks/sky130A/libs.tech/klayout/sky130A.lyt
+Using layout file: /project/openlane/UART/runs/UART/results/floorplan/transmitter_top_module.floorplan.def
+[INFO] Reading tech file: /home/mariam/mabrains/openlane/pdks/sky130A/libs.tech/klayout/sky130A.lyt
+[INFO] Reading Layout file: /project/openlane/UART/runs/UART/results/floorplan/transmitter_top_module.floorplan.def
+[INFO] Writing out PNG screenshot '/project/openlane/UART/runs/UART/results/floorplan/transmitter_top_module.floorplan.def.png'
+Done

@@ -1,0 +1,5 @@
+
+28. Executing CHECK pass (checking for obvious problems).
+checking module transmitter_top_module..
+Warning: Wire transmitter_top_module.\TX is used but has no driver.
+found and reported 1 problems.
