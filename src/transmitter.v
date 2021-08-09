@@ -6,13 +6,16 @@ parameter  IDLE      = 5'b00001,
            data_bits = 5'b00100,
            parity_bit= 5'b01000,
            stop_bit  = 5'b10000,
+	   /////////data bits options
 	   five_data_bits = 4'b0101, 
 	   six_data_bits = 4'b0110,
 	   seven_data_bits = 4'b0111, 
 	   eight_data_bits = 4'b1000, 
 	   nine_data_bits = 4'b1001,
+	   /////////parity logic options
 	   no_parity = 1'b0,
 	   one_parity = 1'b1,
+	   ////////stopping options
 	   one_stop_bit = 2'b01,
 	   two_stop_bits = 2'b10;
 
@@ -53,10 +56,12 @@ assign stop_controlling_signals = Transmitter_Status[7:6];
 		 case (current_state)
 			 IDLE: begin
 				 TX = 1'b1;
+				 if(sampling_pulse == 4'b100) begin
 				 if(!UART_STA_TX) begin
 					 next_state <= IDLE; end
 					 else begin
 						 next_state <= start_bit; end
+					 end
 			 end
 
 			 start_bit: begin
@@ -103,7 +108,7 @@ assign stop_controlling_signals = Transmitter_Status[7:6];
 						end
 					end
 					else if(data_bits_controlling_signals == eight_data_bits) begin
-						if(index < eight_data_bits) begin
+						if(index < 'b1000) begin
                                                          TX <= Transmitter_Holding_Register[index];
                                                         index <= index + 1;
                                                         next_state <= data_bits;
@@ -153,11 +158,11 @@ assign stop_controlling_signals = Transmitter_Status[7:6];
 						 next_state <= stop_bit;
 					 end
 					 else if (data_bits_controlling_signals == eight_data_bits) begin
-						 TX <= ^Transmitter_Holding_Register[eight_data_bits-1 :0];
+						 TX <= ^(Transmitter_Holding_Register[7 :0]);
 						 next_state <= stop_bit;
 					 end
 					 else if (data_bits_controlling_signals == nine_data_bits) begin
-						 TX <= ^Transmitter_Holding_Register[nine_data_bits-1 :0];
+						 TX <= ^(Transmitter_Holding_Register[nine_data_bits-1 :0]);
 						 next_state <= stop_bit;
 					 end
 					 else begin

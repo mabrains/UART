@@ -11,6 +11,24 @@ input [31:0] Transmitter_Status;
 output TX;
 wire [3:0] sampling_pulse;
 
+reg [4:0] index = 'b0;
+reg [10:0] recieved_bits = 'b0;
+
+always @ (sampling_pulse) begin
+$monitor("TX = %b, sampling_pulse = %b, index = %b, recieved_bits = %b, time = %t \n", TX, sampling_pulse, index, recieved_bits, $time);
+if(sampling_pulse == 4'b1000) begin
+if(index < 5'b11111 ) begin
+recieved_bits[index] <= TX;
+index <= index + 1;
+end
+else begin
+        index = 'b0;
+        $finish;
+end
+end
+end
+
+
 //transmitter instance
 transmitter u1 (
 	.clk(clk),

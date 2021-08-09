@@ -59,13 +59,14 @@ always @ (posedge clk)  begin
 					 end
 				 end
 						 else begin
+							divisor = {8'b0 ,number_of_pulses_per_bit[13:8]};
 							 next_state <= Divisor_Logic;
 						 end
 					 end
 		Divisor_Logic: begin
-				if(divisor_count == 'd10415) begin
-                                           sampling_pulse <= sampling_pulse + 1;
-                                           divisor_count = 'b0;
+				if(divisor_count == 'd651) begin
+                                           sampling_pulse = sampling_pulse + 1;
+                                           divisor_count = 'b1;
 				//	$monitor("Baud_Rate_Holding_Register = %d ,clock_frequency_register = %d \n", Baud_Rate_Holding_Register, clock_frequency_register);
                                   //      $finish;
 				 counter = 'b0;
